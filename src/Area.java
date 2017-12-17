@@ -44,7 +44,7 @@ public class Area {
                 }
             }else if(a.table == 2){
                 Random rand = new Random();
-                int r = rand.nextInt(2);
+                int r = rand.nextInt(3);
                 if(r==0){
                     Monster.encounter(Game.slime, a);
                     ++a.monstersSlain;
@@ -54,6 +54,8 @@ public class Area {
                 }else if(r == 2){
                     Monster.encounter(Game.bat, a);
                 }
+            }else if(a.table == 3){
+                Monster.encounter(Game.elite, a);
             }
         }
         /*if(a.table == 1){
@@ -71,5 +73,8 @@ public class Area {
     }
     static int getSlain(Area a){
         return a.monstersSlain;
+    }
+    static String getName(Area a){
+        return a.name;
     }
 }
