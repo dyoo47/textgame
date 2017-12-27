@@ -3,7 +3,7 @@
  */
 import java.util.Scanner;
 public class Monster {
-    private String name, currentMonster;
+    private String name;
     private int value;
     private double health, mana, atk;
     private Item drop;
@@ -49,8 +49,11 @@ public class Monster {
         double a = m.atk;
         Scanner input = new Scanner(System.in);
         while(h>0){
+            if(Game.getHealth() <= 0){
+                Game.displayEnd(m.name);
+            }
             Game.addTurn();
-            System.out.println("What will you do? ATTACK[a] ESCAPE[e] INVENTORY[i] Turn: " + Game.turn);
+            System.out.println("What will you do? ATTACK[a] SPELL[s] ESCAPE[e] INVENTORY[i] Turn: " + Game.turn);
             String response = input.nextLine();
             if(response.equals("a")){
                 h = h - Game.getAtk();
@@ -89,6 +92,23 @@ public class Monster {
 
                 }else{
                     System.out.println("You did not use an item.");
+                }
+            }else if(response.equals("s")){
+                System.out.println("Which SPELL would you like to use?");
+                Game.displayS();
+                int r = input.nextInt();
+                if(Game.spellInventory.get(r).getType() == 1 && Game.getMana() >= Game.spellInventory.get(r).getCost()){
+                    Game.setMana(Game.getMana()-(Game.spellInventory.get(r)).getCost());
+                    Game.addHealth(Game.spellInventory.get(r).getAmount());
+                    System.out.println("You used " + Game.spellInventory.get(r).getName() + " to heal yourself for " + Game.spellInventory.get(r).getAmount()+" HEALTH.");
+                    Game.display();
+                    display(m);
+                }else if(Game.spellInventory.get(r).getType() == 2 && Game.getMana() >= Game.spellInventory.get(r).getCost()){
+                    Game.setMana(Game.getMana()-(Game.spellInventory.get(r)).getCost());
+                    h = h - Game.spellInventory.get(r).getAmount();
+                    System.out.println("You used " + Game.spellInventory.get(r).getName() + " on the " + m.name + " and inflicted " + Game.spellInventory.get(r).getAmount() + " damage.");
+                    Game.display();
+                    display(m);
                 }
             }
         }
